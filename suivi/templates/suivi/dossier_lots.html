@@ -1,0 +1,77 @@
+
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}
+    liste lot
+{% endblock %}
+
+
+{% block btn %}
+<a class="nav-link" href="{% url 'suivi' %}"><i class="fa fa-rotate-left text-danger"></i></a>
+{% endblock btn %}
+
+{% block main %}
+
+<h4><span class="text-bold text-danger">{{dossier.numero_doss}}</span> <span class="text-bold text-success">{{dossier.intitule_doss}} </span></h4>
+
+<table id="example" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Lot</th>
+            <th>Intitulé</th>
+            <th>Montant</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in lots %}
+        <tr>
+            <td>{{item.num_lot}}</td>
+            <td>{{item.intitule_lot}}</td>
+            <td>{{item.montant_lot}}</td>
+            <td>
+                <a href="{% url 'editlot' item.id %}">
+                    <i class="fa fa-pencil text-warning"></i>
+                </a>
+                &nbsp;
+                <a data-bs-toggle="modal" data-bs-target="#deleteLot{{item.id}}" title="supprimer">
+                    <i class="fas fa-trash text-danger"></i> 
+                </a>
+            </td>
+        </tr>
+
+
+        {% include "suivi/delete_lot.html" %}
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+
+
+{% for message in messages %}
+        <script src="{% static 'js/sweetalert.min.js' %}"></script>
+        {% if message.tags == 'error' %}
+        <script>
+            var m = "{{ message }}";
+            swal("Réfusé!", m, "error");
+        </script>
+        {% elif message.tags == 'success' %}
+        <script>
+            var m = "{{ message }}";
+            swal("Reussi!", m, "success");
+        </script>
+        {% elif message.tags == 'warning' %}
+        <script>
+            var m = "{{ message }}";
+            swal("Avertissement!", m, "warning");
+        </script>
+        {% endif %}
+
+    {% endfor%}
+
+{% endblock main %}
+

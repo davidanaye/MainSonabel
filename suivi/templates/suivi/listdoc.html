@@ -1,0 +1,97 @@
+
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}
+    mes dossier
+{% endblock %}
+
+
+{% block main %}
+
+
+<table id="example" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Numero</th>
+            <th>Intitulé</th>
+            <th>Date retour DGCMEF</th>
+            <th>Propriétaire</th>
+            <th>Dossier</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in dossiers %}
+        <tr>
+            <td class="text-center">{{item.id}}</td>
+            <td class="text-center">{{item.numero_doss}}</td>
+            <td class="text-center">{{item.intitule_doss}}</td>
+            <td class="text-center">{{item.date_retour_dgcmef}}</td>
+            <td class="text-center">{{item.owner}}</td>
+            {% if item.fichier %}
+            <td class="text-center"><a href="{{item.fichier.url}}"><i class="fa fa-file-pdf text-danger text-bold"></i></a></td>
+            {% else %}
+            <td class="text-center"><i class="fa fa-close text-danger text-bold"></i></td>
+            {% endif %}
+            <td>
+                <a href="{% url 'adddlot' item.id %}" title="Nouveau lot">
+                    <i class="fa fa-book text-success"></i>
+                </a>
+                &nbsp;
+                <a href="{% url 'editdossier' item.id %}" title="Modifier Dossier">
+                    <i class="fa fa-pencil text-warning"></i>
+                </a>
+
+                &nbsp;
+                <a href="{% url 'dossier_lots' item.id %}" title="Voir les lot du dossier">
+                    <i class="fa fa-eye text-secondary"></i>
+                </a>
+                <a data-bs-toggle="modal" data-bs-target="#deleteDossier{{item.id}}" title="supprimer le dossier">
+                    <i class="fas fa-trash text-danger"></i> 
+                </a>
+            </td>
+        </tr>
+
+        {% include "suivi/delete_dossier.html" %}
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+
+{% for message in messages %}
+        <script src="{% static 'js/sweetalert.min.js' %}"></script>
+        {% if message.tags == 'error' %}
+        <script>
+            var m = "{{ message }}";
+            swal("Réfusé!", m, "error");
+        </script>
+        {% elif message.tags == 'success' %}
+        <script>
+            var m = "{{ message }}";
+            swal("Reussi!", m, "success");
+        </script>
+        {% elif message.tags == 'warning' %}
+        <script>
+            var m = "{{ message }}";
+            swal("Avertissement!", m, "warning");
+        </script>
+        {% endif %}
+
+    {% endfor%}
+
+{% endblock main %}
+
+
+   
+   
+   
+
+
+
+
+

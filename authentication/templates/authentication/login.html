@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+
+{% block title %}
+  connexion
+{% endblock %}
+
+{% block nav %}{% endblock nav %}
+
+{% block main %} 
+					
+<section class="vh-100 mt-3 mb-3" style="background-color: #eee;">
+  <div class="container h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-lg-12 col-xl-11">
+        <div class="card text-black" style="border-radius: 25px;">
+          <div class="card-body p-md-5">
+            <div class="row justify-content-center">
+              <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+
+                <p class="text-center h6 fw-bold mb-5 mx-1 mx-md-4 mt-4" style="color:#0080ff;"></p>
+              <form method="post" action="{% url 'login_user' %}">
+                {% csrf_token %}
+                  <div class="form-floating mb-3">
+                    <input type="text" name="username" class="form-control" id="floatingInput" required>
+                    <label for="floatingInput">Nom utilisateur</label>
+                  </div>
+                  <div class="form-floating">
+                    <input type="password" name="password" class="form-control" id="floatingPassword" required>
+                    <label for="floatingPassword">Mot de passe</label>
+                  </div>
+                  <div class="p-t-20 mt-3">
+                    <button class="btn btn-block btn-primary" style="background-color:#0080ff;" type="submit">Connexion</button>
+                  </div>
+              </form>
+
+              </div>
+              <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+
+                <img src="{% static "media/app_img/logo_sonabel.png" %}"
+                  class="img-fluid" alt="Logo Sonabel">
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% for message in messages %}
+        {% comment %} <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> {% endcomment %}
+        <script src="{% static 'js/sweetalert.min.js' %}"></script>
+        {% if message.tags == 'error' %}
+        <script>
+            var m = "{{ message }}";
+            swal("Réfusé!", m, "error");
+        </script>
+        {% elif message.tags == 'success' %}
+        <script>
+            var m = "{{ message }}";
+            swal("Bienvenue!", m, "success");
+        </script>
+        {% elif message.tags == 'warning' %}
+        <script>
+            var m = "{{ message }}";
+            swal("A bientôt!", m, "warning");
+        </script>
+        {% endif %}
+
+    {% endfor%}
+{% endblock main %}
+

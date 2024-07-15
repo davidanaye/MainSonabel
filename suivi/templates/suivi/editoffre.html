@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}
+    Ajouter une offre
+{% endblock %}
+
+{% block main %}
+<div class="container-fluid">
+    <form method="post" class="card p-3 mt-5 border border-primary" enctype="multipart/form-data">
+        <h1>Ajouter une offre pour le dossier : {{ dossier.intitule_doss }}</h1>
+        {% csrf_token %}
+        {{ form|crispy }}
+        <div class="mt-4" style="width: 100%;">
+            <button type="submit" name="submit" value="Ajouter" class="btn btn-primary" id="submit-id-submit">
+                Ajouter <i class="fas fa-plus"></i>
+            </button>
+            <a style="font-size: 15px; width: 50px;" href="{% url 'process_dossier' dossier.id %}" type="button" class="btn btn-warning" title="Close">
+                <i class="fas fa-times"></i>
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock main %}
+
+<script>
+    $(document).ready(function() {
+        $("#id_region").select2({
+            placeholder: "Sélectionner la région",
+            allowClear: true
+        });
+        $("#id_province").select2({
+            placeholder: "Sélectionner la province",
+            allowClear: true
+        });
+        $("#id_commune").select2({
+            placeholder: "Sélectionner la Commune",
+            allowClear: true
+        });
+        $("#id_region_demandeur").select2({
+            placeholder: "Sélectionner la région du demandeur",
+            allowClear: true
+        });
+        $("#id_province_demandeur").select2({
+            placeholder: "Sélectionner la province du demandeur",
+            allowClear: true
+        });
+    });
+</script>

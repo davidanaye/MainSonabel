@@ -1,0 +1,60 @@
+
+
+
+<table id="example" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Numero de publication</th>
+            <th>Date d'envois</th>
+            <th>Date de publication</th>
+            <th>Dossier</th>
+            <th>Fichier</th>
+            <th>
+                <a class="nav-link" href="">
+                <i class="fa fa-plus-circle text-primary"></i>
+                </a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in avis %}
+        <tr>
+            <td>{{item.id}}</td>
+            <td>{{item.num_publi}}</td>
+            <td>{{item.date_envoi}}</td>
+            <td>{{item.date_publi}}</td>
+            {% if item.fichier %}
+            <td><a href="{{item.fichier.url}}"> <i class="fa fa-file-pdf"></i> </a></td>
+            {% else %}
+            <td class="text-center text-danger">pas de fichier</td>
+            {% endif %}
+            <td>{{item.dossier_id}}</td>
+            <td>
+                <a href="{% url 'editavis' item.id %}">
+                    <i class="fa fa-pencil text-warning"></i>
+                </a>
+                &nbsp;
+                <a data-bs-toggle="modal" data-bs-target="#deleteAvis{{item.id}}" title="supprimer">
+                    <i class="fas fa-trash text-danger"></i> 
+                </a>
+            </td>
+        </tr>
+        
+
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+
+
+   
+   
+   
+
+
+
+
+

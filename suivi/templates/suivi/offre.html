@@ -1,0 +1,47 @@
+
+
+<table id="example" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Date de reception</th>
+            <th>
+                &nbsp;
+                <a class="nav-link" href="{% url 'addoffre' dossier.id %}">
+                    <i class="fa fa-plus-circle text-primary"></i>
+                </a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in offres %}
+        <tr>
+            <td>{{item.id}}</td>
+            <td>{{item.plan_id}}</td>
+            <td>
+                <a href="">
+                    <i class="fa fa-pencil text-warning"></i>
+                </a>
+                &nbsp;
+                <a data-bs-toggle="modal" data-bs-target="#deletePlanItem{{item.id}}" title="supprimer">
+                    <i class="fas fa-trash text-danger"></i> 
+                </a>
+            </td>
+        </tr>
+        
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+
+
+   
+   
+   
+
+
+
+
+

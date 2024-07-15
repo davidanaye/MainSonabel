@@ -1,0 +1,92 @@
+
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}
+    dossier
+{% endblock %}
+
+
+{% block btn %}
+<a class="nav-link" href="{% url 'listdoc' %}"><i class="fa fa-folder-open text-primary"></i></a>
+{% endblock btn %}
+
+{% block main %}
+
+
+<table id="example" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Plan</th>
+            <th>Budget</th>
+            <th>Nature</th>
+            <th>Intitulé</th>
+            <th>Beneficière</th>
+            <th>Agent</th>
+            <th>Statut</th>
+            <th><i class="fa fa-gears text-success"></i></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{item.id}}</td>
+            <td>{{item.plan_id.annee}}</td>
+            <td>{{item.budget}}</td>
+            <td>{{item.mode}}</td>
+            <td>{{item.localisation}}</td>
+            <td>{{item.designation}}</td>
+            <td>{{item.agent_id}}</td>
+            {% if item.statut %}
+            <td>{{item.statut}}</td>
+            {% else %}
+            <td><i class="fa fa-close text-danger text-bold"></i></td>
+            {% endif %}
+            <td>
+                <a href="{% url 'adddossier' item.id %}">
+                    <i class="fa fa-folder text-success"></i>
+                </a>
+            </td>
+        </tr>
+       
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+
+{% for message in messages %}
+        <script src="{% static 'js/sweetalert.min.js' %}"></script>
+        {% if message.tags == 'error' %}
+        <script>
+            var m = "{{ message }}";
+            swal("Réfusé!", m, "error");
+        </script>
+        {% elif message.tags == 'success' %}
+        <script>
+            var m = "{{ message }}";
+            swal("Reussi!", m, "success");
+        </script>
+        {% elif message.tags == 'warning' %}
+        <script>
+            var m = "{{ message }}";
+            swal("Avertissement!", m, "warning");
+        </script>
+        {% endif %}
+
+    {% endfor%}
+
+{% endblock main %}
+
+
+   
+   
+   
+
+
+
+
+

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% load i18n %}
+{% load static %}
+
+{% block title %}
+    ajout ppm
+{% endblock %}
+{% block extra_style %}{% endblock extra_style %}
+
+{% block main %}
+
+<div class="container-fluid">
+      <form method="post" class="card p-3 mt-5 border border-primary" enctype="multipart/form-data">
+   
+            {% csrf_token %}
+         
+            {{ form|crispy }}
+
+            <div class="mt-4" style="width: 100p%;">
+               
+               <button type="submit" name="submit" value="Ajouter" class="btn btn-primary" id="submit-id-submit" />
+                Ajouter   <i class="fas fa-plus"></i>
+            </button>
+
+               <a style= "font-size: 15px; wdith: 50px;" href="{% url 'itemsliste' %}" type="button" class="btn btn-warning" title="Close">
+                     <i class="fas fa-times"></i>
+               </a>
+            
+            </div>
+         </form> 
+</div>
+
+
+
+
+<script>
+
+   $("#id_plan_id").select2({
+    placeholder: "selectionner le plan",
+    allowClear: true,
+    theme: "classic",
+   });
+
+   $("#id_agent_id").select2({
+    placeholder: "selectionner l'agent",
+    allowClear: true,
+    theme: "classic",
+   });
+
+ </script>
+{% endblock main %}
+
+
+
+
+
+
+

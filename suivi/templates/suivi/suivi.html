@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}
+    suivi dossier
+{% endblock %}
+
+
+{% block btn %}
+
+{% endblock btn %}
+
+{% block main %}
+
+
+<div class="container-fluid">
+    <div class="row">
+        {% for item in dossiers %}
+        <div class="col-4">
+            <div class="card" style="width: 18rem;">
+                <i class="fa fa-folder-open text-danger" style="font-size: 100px;"></i>
+                <div class="card-body text-center">
+                <h5 class="card-title">{{item.numero_doss}}</h5>
+                <p class="card-text">{{item.intitule_doss}}</p>
+                <a href="{% url 'process_dossier' item.id %}" class="btn btn-warning">Suivi</a> <a href="{% url 'dossier_lots' item.id %}" class="btn btn-success">Lot</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+  
+
+{% for message in messages %}
+        <script src="{% static 'js/sweetalert.min.js' %}"></script>
+        {% if message.tags == 'error' %}
+        <script>
+            var m = "{{ message }}";
+            swal("Réfusé!", m, "error");
+        </script>
+        {% elif message.tags == 'success' %}
+        <script>
+            var m = "{{ message }}";
+            swal("Bienvenue!", m, "success");
+        </script>
+        {% elif message.tags == 'warning' %}
+        <script>
+            var m = "{{ message }}";
+            swal("A bientôt!", m, "warning");
+        </script>
+        {% endif %}
+
+    {% endfor%}
+    
+{% endblock main %}

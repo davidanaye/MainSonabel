@@ -116,23 +116,20 @@ class Planitems(models.Model):
 
 
 class Dossiers(models.Model):
-    planitem_id = models.ForeignKey(Planitems, blank=True, null=True, on_delete=models.CASCADE, verbose_name="Ligne du plan")
-    numero_doss = models.CharField(max_length=200,blank=True, null=True)
+    planitem_id = models.ForeignKey('Planitems', blank=True, null=True, on_delete=models.CASCADE, verbose_name="Ligne du plan")
+    numero_doss = models.CharField(max_length=200, blank=True, null=True)
     intitule_doss = models.TextField(blank=True, null=True)
     date_trans_sign = models.DateField(blank=True, null=True, verbose_name="Date envois pour signature")
     date_retour_sign = models.DateField(blank=True, null=True, verbose_name="Date retour")
-    date_trans_dgcmef = models.DateField(blank=True, null=True, verbose_name="Date de tensmission à la DGCMEF")
-    owner = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE, verbose_name="Propriétaire")
+    date_trans_dgcmef = models.DateField(blank=True, null=True, verbose_name="Date de transmission à la DGCMEF")
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Propriétaire")
     date_retour_dgcmef = models.DateField(blank=True, null=True, verbose_name="Date retour la DGCMEF")
     fichier = models.FileField(blank=True, null=True, upload_to="uploads/dao")
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-    
-    
-    
+
     def __str__(self):
-        return self.numero_doss + ' - ' + self.intitule_doss  
-    
+        return self.numero_doss + ' - ' + self.intitule_doss
     
     def has_lots(self):
         # Check if this dossier have a lot
@@ -165,7 +162,7 @@ class Avis(models.Model):
     
 
 class Offres(models.Model):
-    dossier = models.ForeignKey(Dossiers, on_delete=models.CASCADE, verbose_name="Dossier")
+    dossier = models.ForeignKey('Dossiers', on_delete=models.CASCADE, verbose_name="Dossier")
     updated_at = models.DateTimeField(blank=True, null=True)
     off_doss_id = models.IntegerField(blank=True, null=True)
     lot_id = models.IntegerField(blank=True, null=True)
@@ -204,6 +201,13 @@ class Offres(models.Model):
     caut = models.IntegerField(blank=True, null=True)
     fichier_caution = models.CharField(max_length=100, blank=True, null=True)
     created_at = models.DateTimeField(blank=True, null=True)
+    date_prevu_reception = models.DateField(blank=True, null=True, verbose_name="Date prévue de réception des offres")
+    date_reel_reception = models.DateField(blank=True, null=True, verbose_name="Date réelle de réception des offres")
+    entreprise = models.CharField(max_length=255, blank=True, null=True, verbose_name="Entreprise")
+    offre_technique = models.FileField(upload_to='uploads/offres_techniques/', blank=True, null=True, verbose_name="Offre technique")
+
+    def __str__(self):
+        return f"Offre {self.id} pour {self.dossier}"
    
 
 class Marches(models.Model):

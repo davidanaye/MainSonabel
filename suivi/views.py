@@ -316,8 +316,8 @@ def process_dossier(request, dossier_id):
 
     # Récupère tous les lots associés à ce dossier
     avis = Avis.objects.filter(dossier_id=dossier.id)
-    offres= Offres.objects.all()
-    marches= Marches.objects.all()
+    offres = Offres.objects.filter(dossier=dossier)
+    # marches = Marches.objects.filter(dossier=dossier)
     
     # Check if user have Dossier
      
@@ -326,7 +326,7 @@ def process_dossier(request, dossier_id):
     'dossier': dossier,
     'avis': avis,
     'offres':offres,
-    'marches': marches
+    # 'marches': marches
     }
     
     return render(request, 'suivi/process_dossier.html',context)

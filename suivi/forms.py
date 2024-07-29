@@ -57,14 +57,7 @@ class AvisForm(forms.ModelForm):
 class OffreForm(forms.ModelForm):
     class Meta:
         model = Offres
-        exclude = ('updated_at',)
-        # widgets = {
-        #     'om_prenom_dep': forms.DateInput(attrs={'type': 'date'}),
-        #     'taxe_offre': forms.DateInput(attrs={'type': 'date'}),
-        #     'rccm': forms.DateInput(attrs={'type': 'date'}),
-        #     'fichier_caution': forms.DateInput(attrs={'type': 'date'}),
-        #     'entreprise_cons': forms.Textarea(attrs={'rows': 4, 'cols': 40}),
-        # }
+        fields = ['dossier', 'date_prevu_reception', 'date_reel_reception', 'entreprise', 'offre_technique']
             
 
 

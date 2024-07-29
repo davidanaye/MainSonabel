@@ -3,27 +3,22 @@
 {% load static %}
 
 {% block extra_style %}
-
 {% endblock extra_style %}
 
 {% block title %}
-    traitement
+    Traitement
 {% endblock %}
 
-
 {% block btn %}
-
 {% endblock btn %}
 
-
 {% block main %}
-
 <div class="container-fluid">
     <div id='slide_menu'>
         <div class="container mt-3">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
               <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#types" role="tab" aria-controls="home" aria-selected="true">Publication </a>
+                <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#types" role="tab" aria-controls="home" aria-selected="true">Publication</a>
               </li>
               <li class="nav-item" role="presentation">
                 <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#emplacement" role="tab" aria-controls="profile" aria-selected="false">Reception des Offres</a>
@@ -42,7 +37,7 @@
               </li>
             </ul>
         
-            <div class="tab-content  mt-2" id="myTabContent">
+            <div class="tab-content mt-2" id="myTabContent">
                 <div class="tab-pane fade show active" id="types" role="tabpanel" aria-labelledby="home-tab">
                   {% include "suivi/avis.html" %}
                 </div>
@@ -51,58 +46,44 @@
                     {% include "suivi/offre.html" %}
                 </div>
                 <div class="tab-pane fade" id="status" role="tabpanel" aria-labelledby="status-tab">
-                    {% comment %} {% include "technique/convention/signature.html" %} {% endcomment %}
                     {% include "suivi/ouverture.html" %}
                 </div>
 
                 <div class="tab-pane fade" id="valid" role="tabpanel" aria-labelledby="valid-tab">
-                    {% comment %} {% include "technique/convention/convention.html" %} {% endcomment %}
                     {% include "suivi/analyse.html" %}
                 </div>
 
                 <div class="tab-pane fade" id="anul" role="tabpanel" aria-labelledby="anul-tab">
                   {% include "suivi/resultat.html" %}
 
-                  {% comment %} {% include "technique/convention/anul_conv.html" %} {% endcomment %}
-
-
                   <div class="tab-pane fade" id="march" role="tabpanel" aria-labelledby="anul-tab">
-                    
-                    
-                    {% comment %} {% include "technique/convention/march.html" %} {% endcomment %}
-
-
-              </div>
-
+                    {% include "suivi/marche.html" %}
+                  </div>
+                </div>
             </div>
-            
-          </div>
-        
+        </div>
     </div>
 </div>
 
 {% for message in messages %}
-        <script src="{% static 'js/sweetalert.min.js' %}"></script>
-        {% if message.tags == 'error' %}
-        <script>
-            var m = "{{ message }}";
-            swal("Réfusé!", m, "error");
-        </script>
-        {% elif message.tags == 'success' %}
-        <script>
-            var m = "{{ message }}";
-            swal("Bienvenue!", m, "success");
-        </script>
-        {% elif message.tags == 'warning' %}
-        <script>
-            var m = "{{ message }}";
-            swal("A bientôt!", m, "warning");
-        </script>
-        {% endif %}
-
-    {% endfor%}
-
-  {% block extrascript %}
-
-  {% endblock extrascript %}
+    <script src="{% static 'js/sweetalert.min.js' %}"></script>
+    {% if message.tags == 'error' %}
+    <script>
+        var m = "{{ message }}";
+        swal("Refusé!", m, "error");
+    </script>
+    {% elif message.tags == 'success' %}
+    <script>
+        var m = "{{ message }}";
+        swal("Bienvenue!", m, "success");
+    </script>
+    {% elif message.tags == 'warning' %}
+    <script>
+        var m = "{{ message }}";
+        swal("A bientôt!", m, "warning");
+    </script>
+    {% endif %}
+{% endfor %}
+{% block extrascript %}
+{% endblock extrascript %}
 {% endblock main %}

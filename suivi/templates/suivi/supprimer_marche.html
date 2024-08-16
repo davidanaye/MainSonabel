@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="container-fluid">
+    <div class="card p-3 mt-5 border border-danger">
+        <h4>Êtes-vous sûr de vouloir supprimer ce marché ?</h4>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Supprimer</button>
+            <a href="{% url 'process_dossier' dossier_id %}" class="btn btn-secondary">Annuler</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

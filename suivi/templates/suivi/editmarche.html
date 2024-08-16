@@ -1,76 +1,113 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
-
 {% load i18n %}
 {% load static %}
 
 {% block title %}
-    ajout dossier
+    Ajouter un marché
 {% endblock %}
-
-
-
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<style>
+    .truncate-lot {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 300px;  /* Ajustez cette valeur selon vos besoins */
+        display: inline-block;
+    }
+</style>
 
 {% block main %}
-
-
 <div class="container-fluid">
-      <form method="post" class="card p-3 mt-5 border border-primary" enctype="multipart/form-data">
-   
-            {% csrf_token %}
-         
-            {{ form|crispy }}
-
-            <div class="mt-4" style="width: 100p%;">
-               
-               <button type="submit" name="submit" value="Ajouter" class="btn btn-primary" id="submit-id-submit" />
-                Ajouter   <i class="fas fa-plus"></i>
-            </button>
-
-               <a style= "font-size: 15px; wdith: 50px;" href="{% url 'process_dossier' dossier.id %}" type="button" class="btn btn-warning" title="Close">
-                     <i class="fas fa-times"></i>
-               </a>
-            
+    <form method="post" class="card p-3 mt-5 border border-primary" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6">
+                {% for field in form %}
+                    {% if forloop.counter0|divisibleby:2 %}
+                        <div class="form-group">
+                            {{ field|as_crispy_field }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
             </div>
-         </form> 
+            <div class="col-md-6">
+                {% for field in form %}
+                    {% if not forloop.counter0|divisibleby:2 %}
+                        <div class="form-group">
+                            {{ field|as_crispy_field }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <input type="hidden" name="attributaire" id="attributaire" value="">
+        <div class="mt-4" style="width: 100%;">
+            <button type="submit" name="submit" value="Ajouter" class="btn btn-primary" id="submit-id-submit">
+                Ajouter <i class="fas fa-plus"></i>
+            </button>
+            <a style="font-size: 15px; width: 50px;" href="{% url 'process_dossier' dossier.id %}" type="button" class="btn btn-warning" title="Close">
+                <i class="fas fa-times"></i>
+            </a>
+        </div>
+        <script>
+            $(document).ready(function() {
+                $('#id_attributaire').select2();
+
+                // Listener pour le changement de l'offre sélectionnée
+                $('#id_offre').change(function() {
+                    var offreId = $(this).val();
+                    
+                    if(offreId) {
+                        // Effectuer une requête AJAX pour récupérer l'attributaire
+                        $.ajax({
+                            url: '{% url "get_attributaire" %}',  // Vous devez créer cette vue
+                            data: {
+                                'offre_id': offreId
+                            },
+                            success: function(data) {
+                                if(data.attributaire_id) {
+                                    $('#attributaire').val(data.attributaire_id);  // Mettre à jour le champ hidden
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+        </script>
+    </form> 
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    
+    <script>
+          // In your Javascript (external .js resource or <script> tag)
+            $(document).ready(function() {
+                $('#id_offre').select2();
+            });
+    </script>
+  
 </div>
+{% endblock main %}
 
-   {% endblock main %}
-
-
-
-   
-   <script>
-     $("#id_region").select2({
-      placeholder: "selectionner la region",
-      allowClear: true
-     });
-     $("#id_province").select2({
-      placeholder: "selectionner la province",
-      allowClear: true
-     });
-   
-   
-     $("#id_commune").select2({
-       placeholder: "selectionner la Commune",
-       allowClear: true
-      });
-   
-   
-      $("#id_region_demandeur").select2({
-         placeholder: "selectionner la region du demandeur",
-         allowClear: true
-        });
-   
-   
-        $("#id_province_demandeur").select2({
-         placeholder: "selectionner la province du demandeur",
-         allowClear: true
-        });
-        
-   </script>
-
-
-
-
-
+<script>
+    $("#id_region").select2({
+        placeholder: "Sélectionner la région",
+        allowClear: true
+    });
+    $("#id_province").select2({
+        placeholder: "Sélectionner la province",
+        allowClear: true
+    });
+    $("#id_commune").select2({
+        placeholder: "Sélectionner la commune",
+        allowClear: true
+    });
+    $("#id_region_demandeur").select2({
+        placeholder: "Sélectionner la région du demandeur",
+        allowClear: true
+    });
+    $("#id_province_demandeur").select2({
+        placeholder: "Sélectionner la province du demandeur",
+        allowClear: true
+    });
+</>

@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}
+    PPM
+{% endblock %}
+
+{% block btn %}
+<a class="nav-link" href="{% url 'addplanitems' %}"><i class="fa fa-plus-circle text-primary"></i></a>
+<a class="nav-link" href=""><i class="fa fa-upload text-primary"></i></a>
+{% endblock btn %}
+
+{% block main %}
+
+<table id="example" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Num Ordre</th>
+            <th>Année de planification</th>
+            <th>Budget</th>
+            <th>Direction Charge Dossier</th>
+            <th>Unité Service Bénéficiaire</th>
+            <th>Montant Inscription Budgétaire</th>
+            <th>Montant Dépenses Engagées Non Liquidées</th>
+            <th>Disponible</th>
+            <th>Éléments Composantes</th>
+            <th>Type Prestation</th>
+            <th>Nature Prestations</th>
+            <th>Mode Passation</th>
+            <th>Agent Charge Dossier</th>
+            
+            <th>Service Charge Dossier Technique</th>
+            <th>Intitulé Dossier</th>
+            <th>Réf. Dossier Appel Concurrence</th>
+            <th>Date Prévue Lancement DGCMEF</th>
+            <th>Date Réelle Lancement DGCMEF</th>
+            <th>Référence Publication</th>
+            <th>Publication DGCMEF</th>
+            <th>Nom Attributaire Provisoire</th>
+            <th>Contentieux Litiges</th>
+            <th>Montant</th>
+            <th>Numéro Marché</th>
+            <th>Date Notification Projet Contrat</th>
+            <th>Date de signature du Contrat</th>
+            <th>Observation</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in planitems_data %}
+        <tr>
+            <td>{{ data.item.num_ordre }}</td>
+            <td>{{ data.item.annee }}</td>
+            <td>{{ data.item.budget }}</td>
+            <td>{{ data.item.direction_charge_dossier }}</td>
+            <td>{{ data.item.direction_charge_dossier  }}</td>
+            <td>{{ data.item.montant_inscription_budgetaire }}</td>
+            <td>{{ data.item.montant_depenses_engagees_non_liquidees }}</td>
+            <td>{{ data.item.disponible }}</td>
+            <td>{{ data.item.elements_composantes }}</td>
+            <td>{{ data.item.type_prestation }}</td>
+            <td>{{ data.item.nature_prestations }}</td>
+            <td>{{ data.item.mode_passation }}</td>
+            <td>{{ data.item.agent_charge_dossier }}</td>
+            <td>{{ data.item.service_charge_dossier_technique }}</td>
+            <td>{{ data.dossier_info.ref_dossier|default:'N/A' }}</td>
+            <td>{{ data.dossier_info.intitule_dossier|default:'N/A' }}</td>
+            <td>{{ data.dossier_info.date_publi|default:'N/A' }}</td>
+            <td>{{ data.dossier_info.date_lancement_publication|default:'N/A' }}</td>
+            <td>{{ data.dossier_info.ref_pub|default:'N/A' }}</td>
+            <td>{{ data.dossier_info.ref_pub|default:'N/A' }}</td>
+            <td>{{ data.dossier_info.nom_attributaire|default:'N/A' }}</td>
+            <td>{{ data.dossier_info.contagieux_litige|default:'N/A' }}</td>
+            <td>{{ data.dossier_info.montant|default:'N/A' }}</td>
+            <td>{{ data.dossier_info.numero_marche|default:'N/A' }}</td>
+            <td>{{ data.dossier_info.date_notif_projet_contrat|default:'N/A' }}</td>
+            <td>{{ data.dossier_info.date_sign_contrat|default:'N/A' }}</td>
+            <td>{{ data.dossier_info.observations|default:'N/A'  }}</td>
+      <!-- Affichage de l'état ici -->
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock main %}

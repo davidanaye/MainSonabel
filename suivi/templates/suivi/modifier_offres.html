@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}
+    Modifier Offre
+{% endblock %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .truncate-lot {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 300px;
+            display: inline-block;
+        }
+    </style>
+{% endblock %}
+
+{% block main %}
+<div class="container-fluid">
+    <form method="post" class="card p-3 mt-5 border border-warning" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <h1>Modifier l'offre pour le dossier : {{ dossier.intitule_doss }}</h1>
+        
+        {% for field in form %}
+            {% if field.name == 'lots' %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    <div id="{{ field.id_for_label }}">
+                        {% if field.field.choices %}
+                            {% for choice in field.field.choices %}
+                                <div class="form-check">
+                                    <input type="checkbox" name="{{ field.name }}" value="{{ choice.0 }}" id="choice_{{ forloop.counter }}" class="form-check-input" {% if choice.0 in form.initial.lots %}checked{% endif %}>
+                                    <label for="choice_{{ forloop.counter }}" class="form-check-label truncate-lot" title="{{ choice.1 }}">
+                                        {{ choice.1|truncatewords:10 }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>Aucun lot disponible pour ce dossier.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% else %}
+                {{ field|as_crispy_field }}
+            {% endif %}
+        {% endfor %}
+
+        <div class="mt-4" style="width: 100%;">
+            <button type="submit" name="submit" value="Modifier" class="btn btn-warning" id="submit-id-submit">
+                Modifier <i class="fas fa-pencil"></i>
+            </button>
+
+            <a style="font-size: 15px; wdith: 50px;" href="{% url 'process_dossier' dossier.id %}" type="button" class="btn btn-warning" title="Close">
+                <i class="fas fa-times"></i>
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock main %}
+
+{% block extra_js %}
+    {{ block.super }}
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Le reste de votre code JavaScript existant...
+
+            // Ajoutez ceci pour activer les tooltips sur les labels tronqués
+            $('.truncate-lot').tooltip();
+        });
+    </script>
+{% endblock %}

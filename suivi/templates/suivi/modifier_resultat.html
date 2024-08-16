@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}
+    Modifier Résultat
+{% endblock %}
+
+{% block main %}
+<div class="container-fluid">
+    <form method="post" class="card p-3 mt-5 border border-warning" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Date prévue de publication -->
+        <div class="form-group">
+            
+            {{ form.date_prevu_pub|as_crispy_field }}
+        </div>
+
+        <!-- Attributaire -->
+        <div class="form-group">
+            
+            {{ form.attributaire|as_crispy_field }}
+        </div>
+
+        <!-- Observation -->
+        <div class="form-group">
+            
+            {{ form.observation|as_crispy_field }}
+        </div>
+
+        <!-- Litige -->
+        <div class="form-group">
+           
+            {{ form.litige|as_crispy_field }}
+        </div>
+
+        <!-- Fichier Litige -->
+        <div class="form-group" id="fichier_litige_group" style="display: none;">
+           
+            {{ form.fichier_litige|as_crispy_field }}
+        </div>
+
+        <!-- Statut -->
+        <div class="form-group">
+            
+            {{ form.statut|as_crispy_field }}
+        </div>
+
+        <!-- Boutons de soumission et de fermeture -->
+        <div class="mt-4" style="width: 100%;">
+            <button type="submit" name="submit" value="Modifier" class="btn btn-warning" id="submit-id-submit">
+                Modifier <i class="fas fa-pencil"></i>
+            </button>
+
+            <a href="{% url 'process_dossier' dossier.id %}" class="btn btn-warning" title="Fermer">
+                <i class="fas fa-times"></i> Fermer
+            </a>
+        </div>
+    </form>
+</div>
+
+<!-- Scripts JavaScript -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#id_attributaire').select2();
+
+        // Show or hide the file input based on the litige selection
+        $('#id_litige').change(function() {
+            var selectedValue = $(this).val();
+            if (selectedValue === 'Oui') {
+                $('#fichier_litige_group').show(); // Show the file input
+            } else {
+                $('#fichier_litige_group').hide(); // Hide the file input
+                $('#id_fichier_litige').val(''); // Clear the file input if not 'Oui'
+            }
+        });
+
+        // Trigger change to show/hide on page load based on default value
+        $('#id_litige').trigger('change');
+    });
+</script>
+
+{% endblock main %}

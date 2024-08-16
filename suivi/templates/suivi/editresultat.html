@@ -1,76 +1,64 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
-
 {% load i18n %}
 {% load static %}
 
-{% block title %}
-    ajout dossier
-{% endblock %}
-
-
-
-
 {% block main %}
+{% block title %}
+{% endblock %}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
+<div class="container">
+   <form method="post" enctype="multipart/form-data"> <!-- Ne pas oublier enctype -->
+       {% csrf_token %}
+       <div class="form-group">
+           {{ form.date_prevu_pub.label_tag }} {{ form.date_prevu_pub }}
+       </div>
+       <div class="form-group">
+           {{ form.attributaire.label_tag }} {{ form.attributaire }}
+       </div>
+       <div class="form-group">
+           {{ form.observation.label_tag }} {{ form.observation }}
+       </div>
+       <div class="form-group">
+           {{ form.litige.label_tag }} {{ form.litige }} <!-- Ensure the ID is correct -->
+       </div>
+       <div class="form-group" id="fichier_litige_group" style="display: none;"> <!-- Hidden by default -->
+           {{ form.fichier_litige.label_tag }} {{ form.fichier_litige }}
+       </div>
+       <div class="form-group">
+           {{ form.statut.label_tag }} {{ form.statut }}
+       </div>
+       <div class="mt-4" style="width: 100%;">
+           <button type="submit" class="btn btn-success">Enregistrer</button>
+           <!-- Button to close the form -->
+           <a href="{% url 'process_dossier' dossier.id %}" class="btn btn-warning" title="Fermer">
+               <i class="fas fa-times"></i> Fermer
+           </a>
+       </div>
+   </form>
+   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/js/select2.min.js"></script>
+   <!-- Include the CSS and JS files of Select2 -->
+   <script>
+    $(document).ready(function() {
+        $('#id_attributaire').select2();
 
-<div class="container-fluid">
-      <form method="post" class="card p-3 mt-5 border border-primary" enctype="multipart/form-data">
-   
-            {% csrf_token %}
-         
-            {{ form|crispy }}
+        // Show or hide the file input based on the litige selection
+        $('#id_litige').change(function() { // Ensure the ID is correct
+            var selectedValue = $(this).val();
+            if (selectedValue === 'Oui') {
+                $('#fichier_litige_group').show(); // Show the file input
+            } else {
+                $('#fichier_litige_group').hide(); // Hide the file input
+                $('#id_fichier_litige').val(''); // Clear the file input if not 'Oui'
+            }
+        });
 
-            <div class="mt-4" style="width: 100p%;">
-               
-               <button type="submit" name="submit" value="Ajouter" class="btn btn-primary" id="submit-id-submit" />
-                Ajouter   <i class="fas fa-plus"></i>
-            </button>
-
-               <a style= "font-size: 15px; wdith: 50px;" href="{% url 'dossier' %}" type="button" class="btn btn-warning" title="Close">
-                     <i class="fas fa-times"></i>
-               </a>
-            
-            </div>
-         </form> 
+        // Trigger change to show/hide on page load based on default value
+        $('#id_litige').trigger('change');
+    });
+   </script>
 </div>
 
-   {% endblock main %}
-
-
-
-   
-   <script>
-     $("#id_region").select2({
-      placeholder: "selectionner la region",
-      allowClear: true
-     });
-     $("#id_province").select2({
-      placeholder: "selectionner la province",
-      allowClear: true
-     });
-   
-   
-     $("#id_commune").select2({
-       placeholder: "selectionner la Commune",
-       allowClear: true
-      });
-   
-   
-      $("#id_region_demandeur").select2({
-         placeholder: "selectionner la region du demandeur",
-         allowClear: true
-        });
-   
-   
-        $("#id_province_demandeur").select2({
-         placeholder: "selectionner la province du demandeur",
-         allowClear: true
-        });
-        
-   </script>
-
-
-
-
-
+{% endblock main %}

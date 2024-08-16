@@ -1,46 +1,51 @@
-
 {% extends 'base.html' %}
 {% load i18n %}
 {% load static %}
 
 {% block title %}
-    dossier
+    Dossier
 {% endblock %}
-
 
 {% block btn %}
 <a class="nav-link" href="{% url 'listdoc' %}"><i class="fa fa-folder-open text-primary"></i></a>
 {% endblock btn %}
 
 {% block main %}
-
+<form method="post" action="{% url 'dossier' %}">
+    {% csrf_token %}
+    <label for="annee">Sélectionnez une année:</label>
+    <select name="annee" id="annee">
+        {% for year in years %}
+        <option value="{{ year.id }}" {% if selected_year == year.id %}selected{% endif %}>
+            {{ year.annee }}
+        </option>
+        {% endfor %}
+    </select>
+    <button type="submit">Filtrer</button>
+</form>
 
 <table id="example" class="table table-striped">
     <thead>
         <tr>
-            <th>Id</th>
-            <th>Plan</th>
-            <th>Budget</th>
-            <th>Nature</th>
-            <th>Intitulé</th>
-            <th>Beneficière</th>
-            <th>Agent</th>
-            <th>Statut</th>
-            <th><i class="fa fa-gears text-success"></i></th>
+            <th>Plan</th> <!-- Correspond à l'année -->
+            <th>Budget</th> <!-- Correspond au champ "budget" --> <!-- Correspond au champ "type_prestation" -->
+            <th>Intitulé</th> <!-- Correspond au champ "intitule_dossier" -->
+            <th>Bénéficiaire</th> <!-- Correspond au champ "unite_service_beneficiaire" -->
+            <th>Agent</th> <!-- Correspond au champ "agent_charge_dossier" -->
+            <th>Statut</th> <!-- Correspond au champ "statut" -->
+            <th><i class="fa fa-gears text-success"></i></th> <!-- Actions -->
         </tr>
     </thead>
     <tbody>
         {% for item in items %}
         <tr>
-            <td>{{item.id}}</td>
-            <td>{{item.plan_id.annee}}</td>
-            <td>{{item.budget}}</td>
-            <td>{{item.mode}}</td>
-            <td>{{item.localisation}}</td>
-            <td>{{item.designation}}</td>
-            <td>{{item.agent_id}}</td>
+            <td>{{ item.annee.annee }}</td> <!-- Affichage de l'année associée -->
+            <td>{{ item.budget }}</td>
+            <td>{{ item.intitule_dossier }}</td>
+            <td>{{ item.direction_charge_dossier }}</td>
+            <td>{{ item.agent_charge_dossier }}</td>
             {% if item.statut %}
-            <td>{{item.statut}}</td>
+            <td>{{ item.statut }}</td>
             {% else %}
             <td><i class="fa fa-close text-danger text-bold"></i></td>
             {% endif %}
@@ -50,43 +55,27 @@
                 </a>
             </td>
         </tr>
-       
         {% endfor %}
     </tbody>
 </table>
 
-
-
-
 {% for message in messages %}
-        <script src="{% static 'js/sweetalert.min.js' %}"></script>
-        {% if message.tags == 'error' %}
-        <script>
-            var m = "{{ message }}";
-            swal("Réfusé!", m, "error");
-        </script>
-        {% elif message.tags == 'success' %}
-        <script>
-            var m = "{{ message }}";
-            swal("Reussi!", m, "success");
-        </script>
-        {% elif message.tags == 'warning' %}
-        <script>
-            var m = "{{ message }}";
-            swal("Avertissement!", m, "warning");
-        </script>
-        {% endif %}
-
-    {% endfor%}
-
+    <script src="{% static 'js/sweetalert.min.js' %}"></script>
+    {% if message.tags == 'error' %}
+    <script>
+        var m = "{{ message }}";
+        swal("Réfusé!", m, "error");
+    </script>
+    {% elif message.tags == 'success' %}
+    <script>
+        var m = "{{ message }}";
+        swal("Réussi!", m, "success");
+    </script>
+    {% elif message.tags == 'warning' %}
+    <script>
+        var m = "{{ message }}";
+        swal("Avertissement!", m, "warning");
+    </script>
+    {% endif %}
+{% endfor %}
 {% endblock main %}
-
-
-   
-   
-   
-
-
-
-
-

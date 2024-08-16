@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}
+    Modifier Marché
+{% endblock %}
+
+{% block main %}
+<div class="container-fluid">
+    <form method="post" class="card p-3 mt-5 border border-warning" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+
+        <div class="mt-4" style="width: 100p%;">
+            <button type="submit" name="submit" value="Modifier" class="btn btn-warning" id="submit-id-submit">
+                Modifier <i class="fas fa-pencil"></i>
+            </button>
+
+            <a style="font-size: 15px; wdith: 50px;" href="{% url 'process_dossier' dossier.id %}" type="button" class="btn btn-warning" title="Close">
+                <i class="fas fa-times"></i>
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock main %}

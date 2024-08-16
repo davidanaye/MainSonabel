@@ -6,13 +6,46 @@
 {% block title %}
     Ajouter une offre
 {% endblock %}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
+{% block extra_css %}
+    {{ block.super }}
+    <style>
+        .truncate-lot {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 300px;  /* Ajustez cette valeur selon vos besoins */
+            display: inline-block;
+        }
+    </style>
+{% endblock %}
 {% block main %}
 <div class="container-fluid">
     <form method="post" class="card p-3 mt-5 border border-primary" enctype="multipart/form-data">
         <h1>Ajouter une offre pour le dossier : {{ dossier.intitule_doss }}</h1>
         {% csrf_token %}
-        {{ form|crispy }}
+        
+        {% for field in form %}
+            {% if field.name == 'lot' %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    <div id="{{ field.id_for_label }}">
+                        {% for choice in field.field.choices %}
+                            <div class="form-check">
+                                <input type="radio" name="{{ field.name }}" value="{{ choice.0 }}" id="choice_{{ forloop.counter }}" class="form-check-input">
+                                <label for="choice_{{ forloop.counter }}" class="form-check-label truncate-lot" title="{{ choice.1 }}">
+                                    {{ choice.1|truncatewords:10 }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% else %}
+                {{ field|as_crispy_field }}
+            {% endif %}
+        {% endfor %}
+        
         <div class="mt-4" style="width: 100%;">
             <button type="submit" name="submit" value="Ajouter" class="btn btn-primary" id="submit-id-submit">
                 Ajouter <i class="fas fa-plus"></i>
@@ -22,30 +55,89 @@
             </a>
         </div>
     </form>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> 
+    <script>
+        $(document).ready(function() {
+            $('#id_entreprise').select2({
+                tags: true,
+                placeholder: 'Sélectionnez ou ajoutez une entreprise',
+                allowClear: true,
+                createTag: function (params) {
+                    var term = $.trim(params.term);
+    
+                    if (term === '') {
+                        return null;
+                    }
+    
+                    return {
+                        id: term,
+                        text: term,
+                        newTag: true // Ajoute un indicateur pour les nouvelles options
+                    };
+                },
+                templateResult: function (data) {
+                    var $result = $("<span></span>");
+                    $result.text(data.text);
+    
+                    if (data.newTag) {
+                        $result.append(" <em>(nouvelle entreprise)</em>");
+                    }
+    
+                    return $result;
+                },
+                templateSelection: function (data) {
+                    return data.text;
+                }
+            });
+    
+            // Persister le texte saisi lors de l'ajout d'une nouvelle entreprise
+            $('#id_entreprise').on('select2:selecting', function (e) {
+                var data = e.params.args.data;
+    
+                // Si une nouvelle entreprise est ajoutée
+                if (data.newTag) {
+                    var newEnterprise = data.text;
+    
+                    // Envoyer la nouvelle entreprise au serveur via AJAX
+                    $.ajax({
+                        url: '{% url "add_new_entreprise" %}',  // Utilisez le bon nom d'URL pour votre vue AJAX
+                        type: 'POST',
+                        data: {
+                            'entreprise_nom': newEnterprise,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                // Ajouter la nouvelle entreprise à la liste des options
+                                var newOption = new Option(response.nom_four, response.id, true, true);
+                                $('#id_entreprise').append(newOption).trigger('change');
+    
+                                // Sélectionner immédiatement la nouvelle entreprise
+                                $(this).val(response.id).trigger('change');
+                            } else {
+                                alert("Erreur lors de l'ajout de la nouvelle entreprise.");
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    
+    
 </div>
 {% endblock main %}
 
-<script>
-    $(document).ready(function() {
-        $("#id_region").select2({
-            placeholder: "Sélectionner la région",
-            allowClear: true
+{% block extra_js %}
+    {{ block.super }}
+    <script>
+        $(document).ready(function() {
+            // Le reste de votre code JavaScript existant...
+            $('.truncate-lot').tooltip();
+            $('.lot-radio').on('change', function() {
+                $('.lot-radio').not(this).prop('checked', false);
+            }); 
         });
-        $("#id_province").select2({
-            placeholder: "Sélectionner la province",
-            allowClear: true
-        });
-        $("#id_commune").select2({
-            placeholder: "Sélectionner la Commune",
-            allowClear: true
-        });
-        $("#id_region_demandeur").select2({
-            placeholder: "Sélectionner la région du demandeur",
-            allowClear: true
-        });
-        $("#id_province_demandeur").select2({
-            placeholder: "Sélectionner la province du demandeur",
-            allowClear: true
-        });
-    });
-</script>
+    </script>
+{% endblock %}

@@ -1,22 +1,35 @@
+<!-- offre.html -->
 <div class="container">
-  <table class="table table-striped">
+    <div class="row mb-3">
+        <div class="col text-start">
+            <label for="entries">Afficher :</label>
+            <select id="entries">
+                <option value="10">10</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+        </div>
+        <div class="col text-end">
+            <form class="d-flex justify-content-end">
+                <input type="search" placeholder="Rechercher...">
+            </form>
+        </div>
+    </div>
+
+    <table class="table table-striped">
         <thead>
             <tr>
-                <th style="text-align"=center;>
-                    &nbsp;
-                    <a class="nav-link" href="{% url 'addoffre' dossier.id %}">
-                        <i class="fa fa-plus-circle text-primary"></i>
-                    </a>
-                </th>
-            </tr>   
-            <tr>
                 <th>Intitulé Dossier</th>
-                <th>Date de reception prévu</th>
-                <th>Date réelle de réception</th>
+                <th>Date de réception</th>
                 <th>Entreprise</th>
                 <th>Offre Technique</th>
-                <th>Actions</th>
-               
+                <th>Lots</th>
+                <th>
+                    <span class="d-inline">Actions</span>
+                    <a href="{% url 'addoffre' dossier.id %}" class="nav-link d-inline">
+                        <i class="fa fa-plus-circle text-primary fa"></i>
+                    </a>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -24,15 +37,26 @@
             <tr>
                 <td>{{ offre.dossier }}</td>
                 <td>{{ offre.date_prevu_reception }}</td>
-                <td>{{ offre.date_reel_reception }}</td>
                 <td>{{ offre.entreprise }}</td>
-                <td>{{ offre.offre_technique}}</td>
+                {% if offre.offre_technique %}
+                <td><a href="{{ offre.offre_technique.url }}"> <i class="fa fa-file-pdf" style="color: red;"></i> </a></td>
+                {% else %}
+                <td class="text-center text-danger">pas de fichier</td>
+                {% endif %}
                 <td>
-                    <a href="" class="btn btn-primary btn-sm">Modifier</a>
-                    <a href="" class="btn btn-danger btn-sm">Supprimer</a>
+                    {% if offre.lot %}
+                        {{ offre.lot.num_lot }}
+                    {% else %}
+                        Aucun lot sélectionné
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'modifier_offres' dossier.id offre.id %}" class="btn btn-primary btn-sm">Modifier</a>
+                    <a href="{% url 'supprimer_offres' dossier.id offre.id %}" class="btn btn-danger btn-sm">Supprimer</a>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
+        
     </table>
 </div>

@@ -1,8 +1,8 @@
-from  django.urls import  path
-from  . import views
+# urls.py
+from django.urls import path
+from . import views
 
 urlpatterns = [
-   #Url de la fiche de prelevement
     path('home', views.home, name='home'),
     path('LignePlan/', views.itemsliste, name='itemsliste'),  
     path('LignePlan/Ajout/', views.addplanitems, name='addplanitems'),
@@ -19,25 +19,25 @@ urlpatterns = [
     path('LignePlan/Dossier/<int:dossier_id>/lots/', views.list_dossier_lots, name='dossier_lots'),
     path('LignePlan/Dossier/Suivi/', views.suivi, name='suivi'),
     path('LignePlan/Dossier/Traitement/<int:dossier_id>/', views.process_dossier, name='process_dossier'),
-    # path('LignePlan/Dossier/Traitement/addOffre/<int:dossier_id>/', views.addoffre, name='addoffre'),
-    path('LignePlan/Dossier/Traitement/Avis/Edit/<int:avis_id>/', views.editavis, name='editavis'),
     path('LignePlan/Dossier/Traitement/Offre/<int:dossier_id>/', views.addoffre, name='addoffre'),
-    path('LignePlan/Dossier/Traitement/Ouverture/', views.addouverture, name='addouverture'),
-    path('LignePlan/Dossier/Traitement/Analyse/', views.addanalyse, name='addanalyse'),
-    path('LignePlan/Dossier/Traitement/resultat/', views.addresultat, name='addresultat'),
-    path('LignePlan/Dossier/Traitement/Marche/', views.addmarche, name='addmarche'),
-    path('LignePlan/Dossier/Traitement/editOffre/', views.editoffre, name='editoffre'),
-    path('LignePlan/Dossier/Traitement/editmarche/', views.editmarche, name='editmarche'),
-    path('LignePlan/Dossier/Traitement/editresultat/', views.editresultat, name='editresultat'),
-    path('LignePlan/Dossier/Traitement/editanalyse/', views.editanalyse, name='editanalyse'),
-    path('LignePlan/Dossier/Traitement/editouverture/', views.editouverture, name='editouverture'),
+    path('LignePlan/Dossier/Traitement/Avis/Edit/<int:avis_id>/', views.editavis, name='editavis'),
+    path('LignePlan/Dossier/Traitement/resultat/<int:offre_id>/', views.addresultat, name='addresultat'),
+    path('LignePlan/Dossier/Traitement/Marche/<int:dossier_id>/', views.addmarche, name='addmarche'),
     
+    path('LignePlan/Dossier/Traitement/editOffre/<int:dossier_id>/<int:offre_id>/', views.modifier_offres, name='modifier_offres'), 
+    path('LignePlan/Dossier/Traitement/supprimerOffre/<int:dossier_id>/<int:offre_id>/', views.supprimer_offres, name='supprimer_offres'),
+    path('LignePlan/Dossier/Traitement/editResultat/<int:dossier_id>/<int:resultat_id>/', views.modifier_resultat, name='modifier_resultat'), 
+    path('LignePlan/Dossier/Traitement/supprimerResultat/<int:dossier_id>/<int:resultat_id>/', views.supprimer_resultat, name='supprimer_resultat'),
+      path('LignePlan/Dossier/Traitement/editMarche/<int:dossier_id>/<int:marche_id>/', views.modifier_marche, name='modifier_marche'),
+    path('LignePlan/Dossier/Traitement/supprimerMarche/<int:dossier_id>/<int:marche_id>/', views.supprimer_marche, name='supprimer_marche'),
+    path('etat/', views.etat_dossiers, name='etat_dossiers'),
+     path('LignePlan/Dossier/Traitement/Avis/<int:dossier_id>/', views.addavis, name='addavis'),
+     path('avis/<int:avis_id>/delete/', views.deleteavis, name='deleteavis'), 
+     path('add_new_entreprise/', views.add_new_entreprise, name='add_new_entreprise'),
+     path('get_attributaire/', views.get_attributaire, name='get_attributaire'),
+      path('LignePlan/import/', views.import_plan, name='import_plan'),
+     path('filter_plan/', views.filter_plan, name='filter_plan'),
+     path('ppm/<int:plan_id>/', views.ppm_view, name='ppm_view'),
+     
+
 ]
-    
-
-
-
-
-
-
-    

@@ -21,13 +21,10 @@
                 <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#types" role="tab" aria-controls="home" aria-selected="true">Publication</a>
               </li>
               <li class="nav-item" role="presentation">
-                <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#emplacement" role="tab" aria-controls="profile" aria-selected="false">Reception des Offres</a>
+                <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#emplacement" role="tab" aria-controls="profile" aria-selected="false">Reception et ouverture</a>
               </li>
               <li class="nav-item" role="presentation">
-                <a class="nav-link" id="status-tab" data-bs-toggle="tab" href="#status" role="tab" aria-controls="result" aria-selected="false">Ouverture</a>
-              </li>
-              <li class="nav-item" role="presentation">
-                <a class="nav-link" id="valid-tab" data-bs-toggle="tab" href="#valid" role="tab" aria-controls="valid" aria-selected="false">Analyse</a>
+                <a class="nav-link" id="valid-tab" data-bs-toggle="tab" href="#valid" role="tab" aria-controls="valid" aria-selected="false">Evaluation</a>
               </li>
               <li class="nav-item" role="presentation">
                 <a class="nav-link" id="valid-tab" data-bs-toggle="tab" href="#anul" role="tab" aria-controls="valid" aria-selected="false">Resultat</a>
@@ -45,9 +42,7 @@
                 <div class="tab-pane fade" id="emplacement" role="tabpanel" aria-labelledby="profile-tab">
                     {% include "suivi/offre.html" %}
                 </div>
-                <div class="tab-pane fade" id="status" role="tabpanel" aria-labelledby="status-tab">
-                    {% include "suivi/ouverture.html" %}
-                </div>
+                
 
                 <div class="tab-pane fade" id="valid" role="tabpanel" aria-labelledby="valid-tab">
                     {% include "suivi/analyse.html" %}
@@ -55,11 +50,11 @@
 
                 <div class="tab-pane fade" id="anul" role="tabpanel" aria-labelledby="anul-tab">
                   {% include "suivi/resultat.html" %}
-
+                </div>  
                   <div class="tab-pane fade" id="march" role="tabpanel" aria-labelledby="anul-tab">
                     {% include "suivi/marche.html" %}
                   </div>
-                </div>
+                
             </div>
         </div>
     </div>

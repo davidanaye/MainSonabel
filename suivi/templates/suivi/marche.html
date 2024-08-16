@@ -1,47 +1,45 @@
-
-
 <table id="example" class="table table-striped">
     <thead>
         <tr>
-            <th>Id</th>
-            <th>Date de marche</th>
+            <th style="font-size: 14px; padding: 4px;">Numéro de marché</th>
+            <th style="font-size: 14px; padding: 4px;">Date de notification</th>
+            <th style="font-size: 14px; padding: 4px;">Attributaire</th>
+            <th style="font-size: 14px; padding: 4px;">Date de signature</th>
+            <th style="font-size: 14px; padding: 4px;">Montant</th>
+            <th style="font-size: 14px; padding: 4px;">Lots associés</th>
             <th>
                 &nbsp;
-                <a class="nav-link" href="">
+                <a class="nav-link" href="{% url 'addmarche' dossier.id %}">
                     <i class="fa fa-plus-circle text-primary"></i>
                 </a>
             </th>
         </tr>
     </thead>
     <tbody>
-        {% for item in items %}
+        {% for item in marches %}
         <tr>
-            <td>{{item.id}}</td>
-            <td>{{item.plan_id}}</td>
+            <td>{{ item.num_ref }}</td>
+            <td>{{ item.date_notif|date:"d/m/Y" }}</td>
+            <td>{{ item.attributaire.nom_four }}</td> <!-- Assurez-vous que 'attributaire' est une instance de 'Fournisseurs' -->
+            <td>{{ item.date_retour_sign|date:"d/m/Y" }}</td>
+            <td>{{ item.montant }}</td>
             <td>
-                <a href="">
+                {% if item.offre.lot %}
+                    {{ item.offre.lot.num_lot }}
+                {% else %}
+                    Aucun lot sélectionné
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'modifier_marche' dossier.id item.id %}">
                     <i class="fa fa-pencil text-warning"></i>
                 </a>
                 &nbsp;
-                <a data-bs-toggle="modal" data-bs-target="#deletePlanItem{{item.id}}" title="supprimer">
-                    <i class="fas fa-trash text-danger"></i> 
+                <a href="{% url 'supprimer_marche' dossier.id item.id %}">
+                    <i class="fas fa-trash text-danger"></i>
                 </a>
             </td>
         </tr>
-        
         {% endfor %}
     </tbody>
 </table>
-
-
-
-
-
-   
-   
-   
-
-
-
-
-

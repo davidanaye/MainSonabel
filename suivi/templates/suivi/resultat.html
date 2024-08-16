@@ -1,47 +1,94 @@
-
-
-<table id="example" class="table table-striped">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Date de resultat</th>
-            <th>
-                &nbsp;
-                <a class="nav-link" href="{% url 'addresultat' %}">
-                    <i class="fa fa-plus-circle text-primary"></i>
-                </a>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in items %}
-        <tr>
-            <td>{{item.id}}</td>
-            <td>{{item.plan_id}}</td>
-            <td>
-                <a href="">
-                    <i class="fa fa-pencil text-warning"></i>
-                </a>
-                &nbsp;
-                <a data-bs-toggle="modal" data-bs-target="#deletePlanItem{{item.id}}" title="supprimer">
-                    <i class="fas fa-trash text-danger"></i> 
-                </a>
-            </td>
-        </tr>
-        
-        {% endfor %}
-    </tbody>
-</table>
-
-
-
-
-
-   
-   
-   
-
-
-
-
-
+<head>
+    <style>
+        th {
+            font-size: 15px; /* Diminuer la taille de la police */
+            padding: 10px; /* Ajuster le padding si nécessaire */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th style="font-size: 13px; padding: 6px;">Références</th>
+                    <th style="font-size: 13px; padding: 6px;">Date de publication des résultats</th>
+                    <th style="font-size: 13px; padding: 6px;">Attributaire provisoire</th>
+                    <th style="font-size: 13px; padding: 8px;">Litige</th>
+                    <th style="font-size: 13px; padding: 8px;">Statut</th>
+                    <th style="font-size: 13px; padding: 6px;">Lot</th>
+                    <th style="font-size: 13px; padding: 6px;">
+                        <span class="d-inline">Actions</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in resultats %}
+                <tr>
+                    <td>{{ item.offre }}</td>
+                    <td>{{ item.date_prevu_pub }}</td>
+                    <td>{{ item.attributaire }}</td>
+                    <td>
+                        {% if item.litige == 'Oui' and item.fichier_litige %}
+                            <a href="{{ item.fichier_litige.url }}" target="_blank">
+                                <i class="fa fa-file-pdf"></i>
+                            </a>
+                        {% else %}
+                            {{ item.litige }}
+                        {% endif %}
+                    </td>
+                    <td>{{ item.statut }}</td>
+                    <td>
+                        {% if item.offre.lot %}
+                            {{ item.offre.lot.num_lot }}
+                        {% else %}
+                            Aucun lot sélectionné
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#viewResultatModal{{item.id}}" title="Visualiser">
+                            <i class="fa fa-eye text-primary"></i>
+                        </a>
+                        &nbsp;
+                        <a href="{% url 'modifier_resultat' dossier.id item.id %}">
+                            <i class="fa fa-pencil text-warning"></i>
+                        </a>
+                        &nbsp;
+                        <a href="{% url 'supprimer_resultat' dossier.id item.id %}">
+                            <i class="fas fa-trash text-danger"></i> 
+                        </a>
+                    </td>
+                </tr>
+                <!-- Modal de Visualisation -->
+                <div class="modal fade" id="viewResultatModal{{item.id}}" tabindex="-1" aria-labelledby="viewResultatModalLabel{{item.id}}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="viewResultatModalLabel{{item.id}}">Visualiser résultat de {{item.offre}}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p><strong>Références</strong>: {{ item.offre }}</p>
+                                <p><strong>Date prévue résultats:</strong> {{ item.date_prevu_pub }}</p>
+                                <p><strong>Attributaire:</strong> {{ item.attributaire }}</p>
+                                <p><strong>Litige:</strong> 
+                                    {% if item.litige == 'Oui' and item.fichier_litige %}
+                                        <a href="{{ item.fichier_litige.url }}" target="_blank">Voir le fichier</a>
+                                    {% else %}
+                                        {{ item.litige }}
+                                    {% endif %}
+                                </p>
+                                <p><strong>Observation</strong>: {{ item.observation }}</p>
+                                <p><strong>Statut</strong>: {{ item.statut }}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>

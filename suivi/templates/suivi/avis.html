@@ -4,14 +4,14 @@
 <table id="example" class="table table-striped">
     <thead>
         <tr>
-            <th>Id</th>
-            <th>Numero de publication</th>
-            <th>Date d'envois</th>
-            <th>Date de publication</th>
-            <th>Dossier</th>
-            <th>Fichier</th>
+            
+            <th style="font-size: 14px; padding: 4px;">Numero de publication</th>
+            <th style="font-size: 14px; padding: 4px;">Date de lancement de publication</th>
+            <th style="font-size: 14px; padding: 4px;">Date de publication DGCMEF</th>
+            <th style="font-size: 14px; padding: 4px;">Fichier</th>
+            <th style="font-size: 14px; padding: 4px;">Dossier</th>
             <th>
-                <a class="nav-link" href="">
+                <a class="nav-link" href="{% url 'addavis' dossier.id %}">
                 <i class="fa fa-plus-circle text-primary"></i>
                 </a>
             </th>
@@ -20,9 +20,8 @@
     <tbody>
         {% for item in avis %}
         <tr>
-            <td>{{item.id}}</td>
-            <td>{{item.num_publi}}</td>
-            <td>{{item.date_envoi}}</td>
+            <td  >{{item.num_publi}}</td>
+            <td>{{item.date_lancement_pulication}}</td>
             <td>{{item.date_publi}}</td>
             {% if item.fichier %}
             <td><a href="{{item.fichier.url}}"> <i class="fa fa-file-pdf"></i> </a></td>
@@ -35,7 +34,7 @@
                     <i class="fa fa-pencil text-warning"></i>
                 </a>
                 &nbsp;
-                <a data-bs-toggle="modal" data-bs-target="#deleteAvis{{item.id}}" title="supprimer">
+                <a title="supprimer" href = "{% url 'deleteavis' item.id %}"  >
                     <i class="fas fa-trash text-danger"></i> 
                 </a>
             </td>

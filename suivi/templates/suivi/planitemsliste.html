@@ -1,12 +1,10 @@
-
 {% extends 'base.html' %}
 {% load i18n %}
 {% load static %}
 
 {% block title %}
-    ppm
+    PPM
 {% endblock %}
-
 
 {% block btn %}
 <a class="nav-link" href="{% url 'addplanitems' %}"><i class="fa fa-plus-circle text-primary"></i></a>
@@ -15,34 +13,69 @@
 
 {% block main %}
 
+<form method="post" action="{% url 'filter_plan' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <select name="annee">
+        <option value="">-- Sélectionnez une année --</option>
+        {% for year in years %}
+            <option value="{{ year.id }}" {% if selected_year == year.id|stringformat:"s" %}selected{% endif %}>{{ year.annee }}</option>
+        {% endfor %}
+    </select><br>
+    <button type="submit" style="margin-bottom: 5px;">HISTORIQUE PLAN</button>
+</form>
+
+
+<form method="post" action="{% url 'import_plan' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <select name="annee" id="id_annee" style="width: 100px; float: right; margin-bottom: 2px;">
+        {% for year in years %}
+        <option value="{{ year }}">{{ year }}</option>
+        {% endfor %}
+    </select><br>
+
+    <input type="file" name="csv_file" accept=".csv" style="float: right; margin-bottom: 5px;"><br><br>
+    <button type="submit" style="float: right; margin-bottom: 5px;">IMPORTER UN PLAN</button>
+</form>
 
 <table id="example" class="table table-striped">
     <thead>
         <tr>
-            <th>Id</th>
-            <th>Plan</th>
+            <th>Num Ordre</th>
+            <th>Année de planification</th>
             <th>Budget</th>
-            <th>Nature</th>
-            <th>Beneficière</th>
-            <th>Agent</th>
-            <th>Statut</th>
+            <th>Direction Charge Dossier</th>
+            <th>Unité Service Bénéficiaire</th>
+            <th>Montant Inscription Budgétaire</th>
+            <th>Montant Dépenses Engagées Non Liquidées</th>
+            <th>Disponible</th>
+            <th>Éléments Composantes</th>
+            <th>Type Prestation</th>
+            <th>Nature Prestations</th>
+            <th>Mode Passation</th>
+            <th>Agent Charge Dossier</th>
+            <th>Service Charge Dossier Technique</th>
+            <th>Intitulé Dossier</th>
             <th><i class="fa fa-gears text-success"></i> Action</th>
         </tr>
     </thead>
     <tbody>
-        {% for item in items %}
+        {% for item in planitems %}
         <tr>
-            <td>{{item.id}}</td>
-            <td>{{item.plan_id.annee}}</td>
-            <td>{{item.budget}}</td>
-            <td>{{item.mode}}</td>
-            <td>{{item.localisation}}</td>
-            <td>{{item.agent_id}}</td>
-            {% if item.statut %}
-            <td>{{item.statut}}</td>
-            {% else %}
-            <td><i class="fa fa-close text-danger text-bold"></i></td>
-            {% endif %}
+            <td>{{ item.num_ordre }}</td>
+            <td>{{ item.annee.annee }}</td>
+            <td>{{ item.budget }}</td>
+            <td>{{ item.direction_charge_dossier }}</td>
+            <td>{{ item.direction_charge_dossier }}</td>
+            <td>{{ item.montant_inscription_budgetaire }}</td>
+            <td>{{ item.montant_depenses_engagees_non_liquidees }}</td>
+            <td>{{ item.disponible }}</td>
+            <td>{{ item.elements_composantes }}</td>
+            <td>{{ item.type_prestation }}</td>
+            <td>{{ item.nature_prestations }}</td>
+            <td>{{ item.mode_passation }}</td>
+            <td>{{ item.agent_charge_dossier }}</td>
+            <td>{{ item.service_charge_dossier_technique }}</td>
+            <td>{{ item.intitule_dossier }}</td>
             <td>
                 <a href="{% url 'editplanitems' item.id %}">
                     <i class="fa fa-pencil text-warning"></i>
@@ -57,39 +90,4 @@
         {% endfor %}
     </tbody>
 </table>
-
-
-
-
-{% for message in messages %}
-        <script src="{% static 'js/sweetalert.min.js' %}"></script>
-        {% if message.tags == 'error' %}
-        <script>
-            var m = "{{ message }}";
-            swal("Réfusé!", m, "error");
-        </script>
-        {% elif message.tags == 'success' %}
-        <script>
-            var m = "{{ message }}";
-            swal("Reussi!", m, "success");
-        </script>
-        {% elif message.tags == 'warning' %}
-        <script>
-            var m = "{{ message }}";
-            swal("Avertissement!", m, "warning");
-        </script>
-        {% endif %}
-
-    {% endfor%}
-
 {% endblock main %}
-
-
-   
-   
-   
-
-
-
-
-

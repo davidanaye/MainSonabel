@@ -2,7 +2,18 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+class Budgets(models.Model):
+    nom = models.CharField(max_length=100)
+  
+class Status(models.Model):
+    nom = models.CharField(max_length=100)
 
+class Modes(models.Model):
+    nom = models.CharField(max_length=100)    
+
+class Devises(models.Model):
+    nom = models.CharField(max_length=100)    
+    
 class Fournisseurs(models.Model):
     nom_four = models.CharField(max_length=200, blank=True, null=True)
     rccm = models.CharField(max_length=200, blank=True, null=True)
@@ -19,46 +30,6 @@ class Fournisseurs(models.Model):
     def __str__(self):
         return self.nom_four
     
-class Status(models.Model):
-    libelle = models.CharField(max_length=200, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
-    updated_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
-    
-    def __str__(self):
-        return self.libelle
-    
-    
-    
-class Modes(models.Model):
-    libelle = models.CharField(max_length=200, blank=True, null=True)
-    description = models.CharField(max_length=200, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
-    updated_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
-    
-    def __str__(self):
-        return self.libelle
-    
-    
-    
-class Devises(models.Model):
-    libelle = models.CharField(max_length=200, blank=True, null=True)
-    symbole = models.CharField(max_length=200, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
-    updated_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
-    
-    def __str__(self):
-        return self.libelle
-    
-    
-
-class Budgets(models.Model):
-    libelle = models.CharField(max_length=200, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
-    updated_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
-    
-    def __str__(self):
-        return self.libelle
-
 
 class Plans(models.Model):
     annee = models.IntegerField(blank=True, null=True)

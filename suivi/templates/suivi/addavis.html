@@ -1,48 +1,72 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+
 {% load i18n %}
 {% load static %}
 
 {% block title %}
-Avis{% endblock %}
+avis{% endblock %}
+
+
+
 
 {% block main %}
+
+
 <div class="container-fluid">
-    <form method="post" class="card p-3 mt-5 border border-primary" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form|crispy }}
+      <form method="post" class="card p-3 mt-5 border border-primary" enctype="multipart/form-data">
+   
+            {% csrf_token %}
+         
+            {{ form|crispy }}
 
-        <div class="mt-4" style="width: 100%;">
-            <button type="submit" name="submit" value="Ajouter" class="btn btn-primary" id="submit-id-submit">
-                Ajouter <i class="fas fa-plus"></i>
+            <div class="mt-4" style="width: 100p%;">
+               
+               <button type="submit" name="submit" value="Ajouter" class="btn btn-primary" id="submit-id-submit" />
+               <a href="" style="color: white;">Ajouter <i class="fas fa-plus"></i></a>
             </button>
-        </div>
-    </form> 
+
+            
+            </div>
+         </form> 
 </div>
-{% endblock main %}
 
-<script>
-    $("#id_region").select2({
-        placeholder: "Sélectionner la région",
-        allowClear: true
-    });
-    $("#id_province").select2({
-        placeholder: "Sélectionner la province",
-        allowClear: true
-    });
+   {% endblock main %}
 
-    $("#id_commune").select2({
-        placeholder: "Sélectionner la commune",
-        allowClear: true
-    });
 
-    $("#id_region_demandeur").select2({
-        placeholder: "Sélectionner la région du demandeur",
-        allowClear: true
-    });
 
-    $("#id_province_demandeur").select2({
-        placeholder: "Sélectionner la province du demandeur",
-        allowClear: true
-    });
-</script>
+   
+   <script>
+     $("#id_region").select2({
+      placeholder: "selectionner la region",
+      allowClear: true
+     });
+     $("#id_province").select2({
+      placeholder: "selectionner la province",
+      allowClear: true
+     });
+   
+   
+     $("#id_commune").select2({
+       placeholder: "selectionner la Commune",
+       allowClear: true
+      });
+   
+   
+      $("#id_region_demandeur").select2({
+         placeholder: "selectionner la region du demandeur",
+         allowClear: true
+        });
+   
+   
+        $("#id_province_demandeur").select2({
+         placeholder: "selectionner la province du demandeur",
+         allowClear: true
+        });
+        
+   </script>
+
+
+
+
+
